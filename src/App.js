@@ -13,7 +13,7 @@ class App extends Component {
     this.state = {palettes: seedColors}
   }
   addPalette = newPalette => {
-    this.setState({palettes: [...seedColors, newPalette]}, () => console.log(this.state.palettes))
+    this.setState({palettes: [...this.state.palettes, newPalette]})
   }
   findPalette(id) {
     return this.state.palettes.find(function(palette) {

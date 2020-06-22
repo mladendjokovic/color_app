@@ -89,9 +89,7 @@ class NewPaletteForm extends Component {
   }
   randomColor = () => {
     const palette = this.props.palettes[Math.floor(Math.random() * this.props.palettes.length)]
-    console.log(palette)
     const randomColor = palette.colors[Math.floor(Math.random() * palette.colors.length)]
-    console.log(randomColor)
     if(this.state.colors.find(color => color.name === randomColor.name)) {
       return this.randomColor()
     } else {

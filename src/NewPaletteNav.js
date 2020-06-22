@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Button from '@material-ui/core/Button';
-import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+import PaletteMetaForm from './PaletteMetaForm';
 
 const drawerWidth = 240;
 
@@ -40,23 +40,19 @@ const styles = theme => ({
 class NewPaletteNav extends Component {
     constructor(props) {
         super(props);
-        this.state = {newPaletteName: ""}
+        this.state = { open: false 
+        }
     }
-    componentDidMount() {
-        ValidatorForm.addValidationRule("isPaletteUnique", value => {
-            return this.props.palettes.every(palette => palette.paletteName.toLowerCase() !== value.toLowerCase())
-          })
-    }
-    handleChange = e => {
-        this.setState({[e.target.name]: e.target.value});
-    }
-    handleSubmit = e => {
-        e.preventDefault();
-        this.props.createPalette(this.state.newPaletteName);
-        this.setState({newPaletteName: ""});
-    }
+    
+    handleClickOpen = () => {
+        this.setState({open: true});
+    };
+
+     handleClose = () => {
+        this.setState({open: false});
+    };
     render() {
-        const {open, classes, handleDrawerOpen} = this.props
+        const {open, classes, handleDrawerOpen, palettes} = this.props
         return (
             <div>
                 <CssBaseline />
@@ -79,26 +75,14 @@ class NewPaletteNav extends Component {
                         </IconButton>
                         <Typography variant="h6" noWrap>
                             Create New Palette
-                        </Typography>
-                    <ValidatorForm 
-                    ref="form"
-                    onSubmit={this.handleSubmit}
-                    >
-                        <TextValidator
-                            label="Palette name"
-                            name="newPaletteName"
-                            value={this.state.newPaletteName}
-                            validators={['required', "isPaletteUnique"]}
-                            errorMessages={["this field can't be empty", "palette name must be unique"]}
-                            onChange={this.handleChange}
-                         />
-                    <Button variant="contained" color="primary" type="submit">Save</Button>
-                    </ValidatorForm>
+                        </Typography>  
+                    <Button variant="contained" color="primary" type="submit" onClick={this.handleClickOpen}>Save</Button>
                     <Link to="/">
                         <Button variant="contained" color="secondary">Back</Button>
                     </Link>
                     </Toolbar>
                 </AppBar>
+                <PaletteMetaForm open={this.state.open} handleClose={this.handleClose} createPalette={this.props.createPalette} palettes={palettes}/>
             </div>
         );
     }
